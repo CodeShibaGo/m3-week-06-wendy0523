@@ -1,14 +1,24 @@
 <html>
   <head>
     {% if title %}
-    <title>{{ title }} - 微型部落格</title>
+    <title>{{ title }} - 微部落格</title>
     {% else %}
-    <title>歡迎來到微型部落格</title>
+    <title>微部落格</title>
     {% endif %}
   </head>
   <body>
-    <div>微型部落格： <a href="/index"> 首頁 </a></div>
+    <div>
+      微部落格：
+      <a href="/index"> 首頁 </a>
+      <a href="/login"> 登入 </a>
+    </div>
     <hr />
-    {% block content %}{% endblock %}
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <ul>
+      {% for message in messages %}
+      <li>{{ message }}</li>
+      {% endfor %}
+    </ul>
+    {% endif %} {% endwith %} {% block content %}{% endblock %}
   </body>
 </html>
