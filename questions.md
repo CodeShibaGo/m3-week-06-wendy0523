@@ -2,8 +2,11 @@
 
 ## Q: 使用 `virtualenv` 建立虛擬環#116
 
+安裝 pip install virtualenv
+退出虛擬環境 deactivate
+
 A: python3 -m venv venv
-在你的目錄中創建一個名叫 venv 新的虛擬環境。
+在你的目錄中創建一個名叫 venv 新的虛擬環境
 
 ## Q: python-dotenv 如何使用？ #119
 
@@ -25,13 +28,81 @@ ADMIN_EMAIL=admin@${DOMAIN} #admin@example.org
 from dotenv import load_dotenv #導入了 dotenv 庫中的 load_dotenv 函數。從.env 檔案中載入環境變數
 import os
 
-load_dotenv() # 呼叫 load_dotenv 函數，讀取.env 再執行。
-server_ip = os.getenv("DOMAIN")
-print(server_ip)
+load_dotenv() # 呼叫 load_dotenv 函數，讀取.env 再執行
+
+server_ip = os.getenv("DOMAIN")#os.getenv()提取 DOMAIN 的值，並將值赋值给變數 server_ip
+print(server_ip)#印出
+
+## .env 與 .flaskenv 的差別
+
+.env 中的變數不僅可以被 Flask 使用，還可以被其他程式或命令列工具所引用，需要安裝 python-dotenv 才可以自行載入，用於資料庫連接字串、API 金鑰等
+
+.flaskenv 是 Flask 專用的配置文件，僅對 Flask 命令列工具和 Flask 應用程式有效，不會影響其他程式或命令列工具。它通常用於配置開發環境下的一些特定選項，如調試模式、自動重載等
+
+.env 文件用於存儲應用程式的所有環境變數，
+而.flaskenv 文件是 Flask 專用的配置文件
 
 ## Q: 如何使用 Flask-SQLAlchemy 連接上 MySQL？ #123
 
+1.  安裝 mysql
+    a. 在 MySQL[官網](https://dev.mysql.com/downloads/mysql/)安裝 MySQL  在你的`.bashrc`中加入這行，讓你可以使用 mysql 指令
+
+    export PATH=${PATH}:/usr/local/mysql/bin
+
+    b. 登入 MySQL，打完這個指令會需要輸入密碼，密碼就是你剛剛在安裝 MySQL 時輸入的密碼
+    mysql -u root -p
+
+2.  安裝 PyMySQL
+
+    pip install PyMySQL
+
+3.  建立資料庫
+
+CREATE DATABASE data; 創建資料庫
+USE data; 切換資料庫
+SHOW DATABASES; 查看
+exit 離開
+
+4. Flask-SQLAlchemy
+
+   a. 安裝 `pip install flask-migrate`
+
+   b.載入 Flask-SQLAlchemy
+   `from flask_sqlalchemy import SQLAlchemy`
+
+   c.config：設定資料庫連線
+   SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or \
+    'mysql+pymysql://root:root@localhost:5000/data'
+   db = SQLAlchemy(app)
+
+   參考:https://medium.com/seaniap/python-web-flask-%E4%BD%BF%E7%94%A8sqlalchemy%E8%B3%87%E6%96%99%E5%BA%AB-8fc49c584ddb
+
 ## Q: Flask-Migrate 如何使用？ #124
+
+Flask-Migrate 套件是用來來操作資料庫遷移管理，不需要重新建立資料庫資料庫，更方便新增或刪除,修改欄位。
+
+a. 安裝 `pip install flask-migrate`
+
+b.匯入 Flask-Migrate 套件
+`from flask_migrate import Migrate`
+
+c. 使用 Migrate 方法，第一個參數為 Flask app、第二個參數為 db 資料庫
+
+`Migrate(app,db)`
+
+d. 執行 init 指令
+
+//MacOS/Linux，在終端機輸入指令來運行 Flask
+`export FLASK_APP=microblog.py`
+
+`flask db init` #執行後會看到專案目錄底下會出現 migrations 資料夾
+
+`flask db migrate -m 'DB init'` #指令來產生 migration scripts
+
+`flask db upgrade `#執行 upgrade 指令將 migration script apply to database
+
+參考資料：https://medium.com/seaniap/python-web-flask-%E5%AF%A6%E4%BD%9C-flask-migrate%E6%9B%B4%E6%96%B0%E8%B3%87%E6%96%99%E5%BA%AB-a5ebc930422a
+https://flask-migrate.readthedocs.io/en/latest/#installation
 
 ## Q: 如何使用 SQLAlchemy 下 Raw SQL？ #125
 
