@@ -101,11 +101,43 @@ d. 執行 init 指令
 
 `flask db upgrade `#執行 upgrade 指令將 migration script apply to database
 
-參考資料：https://medium.com/seaniap/python-web-flask-%E5%AF%A6%E4%BD%9C-flask-migrate%E6%9B%B4%E6%96%B0%E8%B3%87%E6%96%99%E5%BA%AB-a5ebc930422a
-https://flask-migrate.readthedocs.io/en/latest/#installation
+[參考資料]：(https://medium.com/seaniap/python-web-flask-%E5%AF%A6%E4%BD%9C-flask-migrate%E6%9B%B4%E6%96%B0%E8%B3%87%E6%96%99%E5%BA%AB-a5ebc930422a)
+(https://flask-migrate.readthedocs.io/en/latest/#installation)
 
 ## Q: 如何使用 SQLAlchemy 下 Raw SQL？ #125
+
+# SQLAlchemy
+
+1. 匯入 text
+   `from sqlalchemy import text`
+   `from app import db`
+
+在 SQLAlchemy 中，create_engine 函數用於連接資料庫和提供資料庫資料接受 URL 作為參數。
+`engine = create_engine('mysql+pymysql://username:password@localhost/db_name')`
+
+2. 使用 session.execute()
+   `session.execute()` 方法允許你直接執行原始 SQL 語句。
+
+#匯入 create_engine()
+`from sqlalchemy import create_engine` #建立資料庫引擎
+.`text()` 函數時，您可以將一個 SQL 字串作為參數傳遞
+.`engine.connect()`用於建立與資料庫的連接的方法
+.`execute()`用於執行 SQL 查詢或命令的方法
+
+````with engine.connect() as con:
+
+    rs = con.execute(text('select * from user'))
+
+    for row in rs:
+        print (row)
+```
+印出結果：
+(1, 'John', 'john@example.com', 'password_hash_value', '1234567890')
+
+. 使用engine.execute()執行原始 SQL(這種方法在 SQLAlchemy 2.0 中已被標記為過時)
+[參考資料](https://www.atlassian.com/data/notebook/how-to-execute-raw-sql-in-sqlalchemy)
 
 ## Q: 如何用土炮的方式建立 Table？ #126
 
 ## Q: 什麼是密碼雜湊？如何使用 Python 實現？ #129
+````

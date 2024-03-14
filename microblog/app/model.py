@@ -1,8 +1,11 @@
 from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.orm as so
-from app import db
+from sqlalchemy import text
+from sqlalchemy import create_engine
+from app import app,db
 
+engine = create_engine('mysql+pymysql://root:112024112024@localhost:3306/data')
 class User(db.Model):
     id: so.Mapped[int] = so.mapped_column(primary_key=True)
     username: so.Mapped[str] = so.mapped_column(sa.String(64), index=True,
@@ -20,6 +23,12 @@ class User(db.Model):
         self.email = email
         self.password_hash = password_hash
         self.phone_number = phone_number
-
+    
     def __repr__(self):
         return '<User {}>'.format(self.username)
+with engine.connect() as con:
+
+    rs = con.execute(text('select * from user'))
+
+    for row in rs:
+        print (row)
