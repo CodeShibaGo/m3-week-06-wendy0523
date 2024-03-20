@@ -108,40 +108,42 @@ d. 執行 init 指令
 
 # SQLAlchemy
 
-1. 匯入 text
-   `from sqlalchemy import text`
-   `from app import db`
+1.  匯入 text
+    `from sqlalchemy import text`
+    `from app import db`
 
 在 SQLAlchemy 中，create_engine 函數用於連接資料庫和提供資料庫資料接受 URL 作為參數。
-`engine = create_engine('mysql+pymysql://username:password@localhost/db_name')`
+`engine = create_engine('mysql+pymysql://root:112024112024@localhost:3306/data')`
 
 2. 使用 session.execute()
    `session.execute()` 方法允許你直接執行原始 SQL 語句。
 
-#匯入 create_engine()
+### 匯入 create_engine()
+
 `from sqlalchemy import create_engine` #建立資料庫引擎
 .`text()` 函數時，您可以將一個 SQL 字串作為參數傳遞
 .`engine.connect()`用於建立與資料庫的連接的方法
 .`execute()`用於執行 SQL 查詢或命令的方法
 
-````with engine.connect() as con:
+```with engine.connect() as con:
 
     rs = con.execute(text('select * from user'))
 
     for row in rs:
         print (row)
 ```
+
 印出結果：
 (1, 'John', 'john@example.com', 'password_hash_value', '1234567890')
 
-. 使用engine.execute()執行原始 SQL(這種方法在 SQLAlchemy 2.0 中已被標記為過時)
+. 使用 engine.execute()執行原始 SQL(這種方法在 SQLAlchemy 2.0 中已被標記為過時)
 [參考資料](https://www.atlassian.com/data/notebook/how-to-execute-raw-sql-in-sqlalchemy)
 
 ## Q: 如何用土炮的方式建立 Table？ #126
 
-#IF NOT EXISTS 表格已存在不會再執行sql
+#IF NOT EXISTS 表格已存在不會再執行 sql
 
-```with engine.connect() as con:
+````with engine.connect() as con:
     con.execute(text('CREATE TABLE IF NOT EXISTS members (MebmbersId INTEGER PRIMARY KEY,Address VARCHAR(255),MebmberPhoto BLOB)'))```
 
 mysql> SHOW TABLES;
