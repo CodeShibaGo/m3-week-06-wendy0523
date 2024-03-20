@@ -32,3 +32,5 @@ with engine.connect() as con:
 
     for row in rs:
         print (row)
+with engine.connect() as con:
+    con.execute(text('CREATE TABLE IF NOT EXISTS members (MebmbersId INTEGER PRIMARY KEY,Address VARCHAR(255),MebmberPhoto BLOB)'))

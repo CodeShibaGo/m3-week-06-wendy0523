@@ -139,5 +139,23 @@ d. 執行 init 指令
 
 ## Q: 如何用土炮的方式建立 Table？ #126
 
+#IF NOT EXISTS 表格已存在不會再執行sql
+
+```with engine.connect() as con:
+    con.execute(text('CREATE TABLE IF NOT EXISTS members (MebmbersId INTEGER PRIMARY KEY,Address VARCHAR(255),MebmberPhoto BLOB)'))```
+
+mysql> SHOW TABLES;
++-----------------+
+| Tables_in_data  |
++-----------------+
+| alembic_version |
+| members         |
+| user            |
++-----------------+
+3 rows in set (0.01 sec)
+
+[參考資料](https://www.atlassian.com/data/notebook/how-to-execute-raw-sql-in-sqlalchemy)
+
+
 ## Q: 什麼是密碼雜湊？如何使用 Python 實現？ #129
 ````
