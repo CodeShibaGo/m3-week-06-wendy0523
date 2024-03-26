@@ -18,7 +18,7 @@ A:
 
 2. 創建 .env 檔案
 
-# Development settings
+### Development settings
 
 DOMAIN=example.org #開發應用時所使用的網域名稱
 ADMIN_EMAIL=admin@${DOMAIN} #admin@example.org
@@ -33,7 +33,7 @@ load_dotenv() # 呼叫 load_dotenv 函數，讀取.env 再執行
 server_ip = os.getenv("DOMAIN")#os.getenv()提取 DOMAIN 的值，並將值赋值给變數 server_ip
 print(server_ip)#印出
 
-## .env 與 .flaskenv 的差別
+### .env 與 .flaskenv 的差別
 
 .env 中的變數不僅可以被 Flask 使用，還可以被其他程式或命令列工具所引用，需要安裝 python-dotenv 才可以自行載入，用於資料庫連接字串、API 金鑰等
 
@@ -106,7 +106,7 @@ d. 執行 init 指令
 
 ## Q: 如何使用 SQLAlchemy 下 Raw SQL？ #125
 
-# SQLAlchemy
+### SQLAlchemy
 
 1.  匯入 text
     `from sqlalchemy import text`
@@ -141,23 +141,35 @@ d. 執行 init 指令
 
 ## Q: 如何用土炮的方式建立 Table？ #126
 
-#IF NOT EXISTS 表格已存在不會再執行 sql
+### IF NOT EXISTS 表格已存在不會再執行 sql
 
-````with engine.connect() as con:
-    con.execute(text('CREATE TABLE IF NOT EXISTS members (MebmbersId INTEGER PRIMARY KEY,Address VARCHAR(255),MebmberPhoto BLOB)'))```
+```with engine.connect() as con:
+    con.execute(text('CREATE TABLE IF NOT EXISTS members (MebmbersId INTEGER PRIMARY KEY,Address VARCHAR(255),MebmberPhoto BLOB)'))
+```
 
 mysql> SHOW TABLES;
 +-----------------+
-| Tables_in_data  |
+| Tables_in_data |
 +-----------------+
 | alembic_version |
-| members         |
-| user            |
+| members |
+| user |
 +-----------------+
 3 rows in set (0.01 sec)
 
 [參考資料](https://www.atlassian.com/data/notebook/how-to-execute-raw-sql-in-sqlalchemy)
 
-
 ## Q: 什麼是密碼雜湊？如何使用 Python 實現？ #129
-````
+
+- 雜湊加鹽
+  密碼「轉換 / 整形」成完全不一樣的樣貌，經過雜湊函數轉換後的內容，稱作雜湊值(hash sum)。與整形不一樣的地方是，我們無法從轉換後的樣貌(雜湊值)，去推導出原本的模樣(原密碼)，雜湊是不可逆的，沒辦法去逆推原本的內容。
+- 使用 werkzeug 進行密碼雜湊
+  `pip install Werkzeug`
+  - generate_password_hash 函數生成密碼的雜湊值。這個函數會自動使用一個安全的加鹽機制來增加雜湊的安全性。
+    `from werkzeug.security import generate_password_hash`
+    hash = generate_password_hash('password')
+    回傳：`scrypt:32768:8:1$KvppJJxfVHIC9ScF$2c012be653c4e8c4dc21b93c4bd5876954a8b427f575830654dc11b421aea6dc1962b790f9197a2ecaafc49fff1dddeeac56a7c42c9fd59b6d23ad8446887e82`
+  - check_password_hash 函數來驗證用戶輸入的密碼是否與存儲的雜湊值匹配
+    `from werkzeug.security import check_password_hash`
+    check_password_hash(hash, 'password')
+    > > > True
