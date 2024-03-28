@@ -165,6 +165,7 @@ mysql> SHOW TABLES;
   密碼「轉換 / 整形」成完全不一樣的樣貌，經過雜湊函數轉換後的內容，稱作雜湊值(hash sum)。與整形不一樣的地方是，我們無法從轉換後的樣貌(雜湊值)，去推導出原本的模樣(原密碼)，雜湊是不可逆的，沒辦法去逆推原本的內容。
 - 使用 werkzeug 進行密碼雜湊
   `pip install Werkzeug`
+
   - generate_password_hash 函數生成密碼的雜湊值。這個函數會自動使用一個安全的加鹽機制來增加雜湊的安全性。
     `from werkzeug.security import generate_password_hash`
     hash = generate_password_hash('password')
@@ -173,3 +174,18 @@ mysql> SHOW TABLES;
     `from werkzeug.security import check_password_hash`
     check_password_hash(hash, 'password')
     > > > True
+
+  ## Python 套件管理工具
+
+  - pip
+    優點:簡單，適合小型專案或「只新增不移除」套件的專案
+    缺點:缺乏移除套件時的相依性管理
+
+  - pipenv
+    優點:自動化虛擬環境和依賴管理，鎖定版本檔案
+    缺點:bug 很多，對 Windows 不友善
+
+  - poetry
+    安裝 Poetry 的時候，一定將它安裝在一個「專用」的虛擬環境。
+    優點:虛擬環境管理ㄝ,套件相依性管理,套件的打包與發布,乾淨且安心地移除套件
+    缺點:需要學習，不像 pip 好上手
